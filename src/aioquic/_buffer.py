@@ -46,7 +46,6 @@ class Buffer:
         return self.pos == self.end
 
     def data_slice(self, start: int, stop: int) -> bytes:
-        print("XXX", start, stop, self.pos, self.end)
         if start < 0 or stop < 0 or start > self.end or start > stop or stop > self.end:
             raise BufferReadError("Read out of bounds")
         return self._data[start:stop]
