@@ -1,15 +1,11 @@
 from typing import Union, Optional
 
 
-class BufferException(Exception):
-    """Buffer Exception"""
-
-
-class BufferReadError(BufferException):
+class BufferReadError(ValueError):
     """A read tried to go out-of-bounds"""
 
 
-class BufferWriteError(BufferException):
+class BufferWriteError(ValueError):
     """A write tried to go out-of-bounds"""
 
 
@@ -36,7 +32,7 @@ class Buffer:
 
     @property
     def data(self) -> bytes:
-        return self._data[: self.pos]
+        return bytes(self._data[: self.pos])
 
     def tell(self) -> int:
         return self.pos
@@ -50,13 +46,8 @@ class Buffer:
         return self.pos == self.end
 
     def data_slice(self, start: int, stop: int) -> bytes:
-        if (
-            start < 0
-            or stop < 0
-            or start >= self.end
-            or start > stop
-            or stop > self.end
-        ):
+        print("XXX", start, stop, self.pos, self.end)
+        if start < 0 or stop < 0 or start > self.end or start > stop or stop > self.end:
             raise BufferReadError("Read out of bounds")
         return self._data[start:stop]
 
