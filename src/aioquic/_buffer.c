@@ -42,10 +42,20 @@ Buffer_init(BufferObject *self, PyObject *args, PyObject *kwargs)
 
     if (data != NULL) {
         self->base = malloc(data_len);
+        if (self->base == NULL)
+        {
+            PyErr_NoMemory();
+            return -1;
+        }
         self->end = self->base + data_len;
         memcpy(self->base, data, data_len);
     } else {
         self->base = malloc(capacity);
+        if (self->base == NULL)
+        {
+            PyErr_NoMemory();
+            return -1;
+        }
         self->end = self->base + capacity;
     }
     self->pos = self->base;
